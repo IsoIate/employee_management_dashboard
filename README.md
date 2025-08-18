@@ -1,6 +1,6 @@
 
 # 0. Get Started (서비스 시작)
-<a href="https://movie-finder-ahqzpeg0u-isolates-projects.vercel.app/" > MovieFinder <a/>
+<!-- <a href="https://movie-finder-ahqzpeg0u-isolates-projects.vercel.app/" > MovieFinder <a/>-->
 
 <br/>
 <br/>
