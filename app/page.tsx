@@ -1,74 +1,148 @@
 "use client";
+import { useEffect, useState } from "react";
+import api from "../lib/api";
+import { Employee } from "../types/Employees";
+import ChartCard from "../components/ChartCard";
 
-import Login from "@/components/Login";
-// pages/index.tsx
-import React, { useState } from "react";
-import { Carousel, Button } from "react-bootstrap";
+export default function Dashboard() {
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const tempEmployees = [
+    {
+      id: 10,
+      name: "김철수",
+      email: "chulsoo.kim@example.com",
+      department: "개발",
+      position: "프론트엔드 개발자",
+      gender: "Male",
+      age: 28,
+      startDate: "2022-03-15",
+      profileImage: "/images/profile1.jpg",
+    },
+    {
+      id: 11,
+      name: "이영희",
+      email: "younghee.lee@example.com",
+      department: "개발",
+      position: "백엔드 개발자",
+      gender: "Female",
+      age: 31,
+      startDate: "2021-08-01",
+      profileImage: "/images/profile2.jpg",
+    },
+    {
+      id: 12,
+      name: "박민수",
+      email: "minsoo.park@example.com",
+      department: "디자인",
+      position: "UI/UX 디자이너",
+      gender: "Male",
+      age: 26,
+      startDate: "2023-01-10",
+      profileImage: "/images/profile3.jpg",
+    },
+    {
+      id: 13,
+      name: "최지우",
+      email: "jiwoo.choi@example.com",
+      department: "마케팅",
+      position: "콘텐츠 매니저",
+      gender: "Female",
+      age: 29,
+      startDate: "2022-06-20",
+      profileImage: "/images/profile4.jpg",
+    },
+    {
+      id: 14,
+      name: "정호준",
+      email: "hojun.jung@example.com",
+      department: "개발",
+      position: "풀스택 개발자",
+      gender: "Male",
+      age: 33,
+      startDate: "2020-11-05",
+      profileImage: "/images/profile5.jpg",
+    },
+    {
+      id: 15,
+      name: "강민아",
+      email: "mina.kang@example.com",
+      department: "인사",
+      position: "HR 매니저",
+      gender: "Female",
+      age: 30,
+      startDate: "2019-09-17",
+      profileImage: "/images/profile6.jpg",
+    },
+    {
+      id: 16,
+      name: "윤도현",
+      email: "dohyun.yoon@example.com",
+      department: "개발",
+      position: "프론트엔드 개발자",
+      gender: "Male",
+      age: 27,
+      startDate: "2023-02-01",
+      profileImage: "/images/profile7.jpg",
+    },
+    {
+      id: 17,
+      name: "한서연",
+      email: "seoyeon.han@example.com",
+      department: "디자인",
+      position: "그래픽 디자이너",
+      gender: "Female",
+      age: 25,
+      startDate: "2022-04-12",
+      profileImage: "/images/profile8.jpg",
+    },
+    {
+      id: 18,
+      name: "이준혁",
+      email: "junhyuk.lee@example.com",
+      department: "개발",
+      position: "백엔드 개발자",
+      gender: "Male",
+      age: 32,
+      startDate: "2021-12-01",
+      profileImage: "/images/profile9.jpg",
+    },
+    {
+      id: 19,
+      name: "서지민",
+      email: "jimin.seo@example.com",
+      department: "마케팅",
+      position: "SNS 마케터",
+      gender: "Female",
+      age: 28,
+      startDate: "2023-03-05",
+      profileImage: "/images/profile10.jpg",
+    },
+  ];
 
-export default function Home() {
-  let [loginToggle, setLoginToggle] = useState(false);
+  useEffect(() => {
+    // api.get("/employees").then((res) => setEmployees(res.data));
+    setEmployees(tempEmployees);
+  }, []);
 
-  function loginBtn() {
-    setLoginToggle(!loginToggle);
-  }
+  console.log(tempEmployees);
+
+  const totalEmployees = employees.length;
+  const maleCount = employees.filter((e) => e.gender === "Male").length;
+  const femaleCount = employees.filter((e) => e.gender === "Female").length;
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* 상단: 제목 + 설명 */}
-      <header className="bg-gray-100 py-8 text-center">
-        <h1 className="text-4xl font-bold mb-2">Travel Planner</h1>
-        <p className="text-gray-700 text-lg">
-          여행 가기 전, 친구, 가족, 동료와 일정 공유를 해 봐요!
-        </p>
-      </header>
-
-      {/* 중간: 이미지 캐러셀 */}
-      <main className="flex-grow container mx-auto py-10">
-        <div>
-          <Carousel className="w-full">
-            <Carousel.Item className="relative h-[400px] md:h-[500px]">
-              <img
-                className="absolute top-0 left-0 w-full h-full object-cover"
-                src="https://picsum.photos/800/400?random=1"
-                alt="Slide 1"
-              />
-            </Carousel.Item>
-            <Carousel.Item className="relative h-[400px] md:h-[500px]">
-              <img
-                className="absolute top-0 left-0 w-full h-full object-cover"
-                src="https://picsum.photos/800/400?random=2"
-                alt="Slide 2"
-              />
-            </Carousel.Item>
-          </Carousel>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">대시보드</h1>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="bg-white p-4 rounded shadow">
+          총 사원: {totalEmployees}
         </div>
-        <div className="flex flex-col items-center pt-20">
-          <Login loginToggle={loginToggle}></Login>
-        </div>
-        <div className=" pt-20 flex flex-col gap-4 items-center ">
-          <Button
-            variant="primary"
-            className="w-60"
-            onClick={() => {
-              loginBtn();
-            }}
-          >
-            로그인
-          </Button>
-          <Button variant="success" className="w-60">
-            회원가입
-          </Button>
-          <Button
-            variant="outline-secondary"
-            className="w-60"
-            onClick={() => {
-              location.href = "/plan";
-            }}
-          >
-            살펴보기
-          </Button>
-        </div>
-      </main>
+        <div className="bg-white p-4 rounded shadow">남성: {maleCount}</div>
+        <div className="bg-white p-4 rounded shadow">여성: {femaleCount}</div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <ChartCard employees={employees} />
+      </div>
     </div>
   );
 }
