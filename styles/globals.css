@@ -1,8 +1,7 @@
-/* Tailwind v4 기준 */
-@import "tailwindcss/preflight";
-@import "tailwindcss/utilities";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* 필요한 경우 사용자 정의 스타일 추가 */
 body {
   font-family: sans-serif;
 }
