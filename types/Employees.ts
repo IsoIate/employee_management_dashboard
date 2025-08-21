@@ -7,5 +7,6 @@ export interface Employee {
   gender?: string;
   age?: number;
   startDate?: string;
+  leaveDate?: string;
   profileImage?: string;
 }

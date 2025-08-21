@@ -3,10 +3,75 @@ import { useEffect, useState } from "react";
 import api from "../lib/api";
 import { Employee } from "../types/Employees";
 import ChartCard from "../components/ChartCard";
+import GenderChartCard from "@/components/GenderChartCard";
+import AgeChartCard from "@/components/AgeChartCard";
+import DepartmentChartCard from "@/components/DepartmentChartCard";
+import TotalEmployeesChartCard from "@/components/TotalEmployeesChartCard";
+import PersonnelChartCard from "@/components/PersonnelChartCard";
 
 export default function Dashboard() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const tempEmployees = [
+    {
+      id: 5,
+      name: "김철수",
+      email: "chulsoo.kim@example.com",
+      department: "개발",
+      position: "프론트엔드 개발자",
+      gender: "Male",
+      age: 28,
+      startDate: "2022-03-15",
+      leaveDate: "2023-03-15",
+      profileImage: "/images/profile1.jpg",
+    },
+    {
+      id: 6,
+      name: "김철수",
+      email: "chulsoo.kim@example.com",
+      department: "개발",
+      position: "프론트엔드 개발자",
+      gender: "Male",
+      age: 28,
+      startDate: "2022-03-15",
+      leaveDate: "2023-03-15",
+      profileImage: "/images/profile1.jpg",
+    },
+    {
+      id: 7,
+      name: "김철수",
+      email: "chulsoo.kim@example.com",
+      department: "개발",
+      position: "프론트엔드 개발자",
+      gender: "Male",
+      age: 28,
+      startDate: "2022-03-15",
+      leaveDate: "2023-07-15",
+      profileImage: "/images/profile1.jpg",
+    },
+    {
+      id: 8,
+      name: "김철수",
+      email: "chulsoo.kim@example.com",
+      department: "개발",
+      position: "프론트엔드 개발자",
+      gender: "Male",
+      age: 28,
+      startDate: "2022-03-15",
+      leaveDate: "2023-04-15",
+      profileImage: "/images/profile1.jpg",
+    },
+    {
+      id: 9,
+      name: "김철수",
+      email: "chulsoo.kim@example.com",
+      department: "개발",
+      position: "프론트엔드 개발자",
+      gender: "Male",
+      age: 28,
+      startDate: "2022-03-15",
+      leaveDate: "2023-06-15",
+      profileImage: "/images/profile1.jpg",
+    },
     {
       id: 10,
       name: "김철수",
@@ -124,24 +189,23 @@ export default function Dashboard() {
     setEmployees(tempEmployees);
   }, []);
 
-  console.log(tempEmployees);
-
-  const totalEmployees = employees.length;
-  const maleCount = employees.filter((e) => e.gender === "Male").length;
-  const femaleCount = employees.filter((e) => e.gender === "Female").length;
-
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">대시보드</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="bg-white p-4 rounded shadow">
-          총 사원: {totalEmployees}
+    <div className="flex justify-center min-h-screen">
+      <div className="p-6 w-3/4 text-center flex flex-col">
+        <h1 className="text-2xl font-bold mb-4">대시보드</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4">
+            <TotalEmployeesChartCard employees={employees} />
+            <AgeChartCard employees={employees} className="w-full " />
+          </div>
+          <div className="grid grid-cols-1 gap-4 w-full h-full">
+            <GenderChartCard employees={employees} />
+            <DepartmentChartCard employees={employees} className="w-full " />
+          </div>
+          <div className="col-span-1 md:col-span-2">
+            <PersonnelChartCard employees={employees} className="w-full " />
+          </div>
         </div>
-        <div className="bg-white p-4 rounded shadow">남성: {maleCount}</div>
-        <div className="bg-white p-4 rounded shadow">여성: {femaleCount}</div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <ChartCard employees={employees} />
       </div>
     </div>
   );
