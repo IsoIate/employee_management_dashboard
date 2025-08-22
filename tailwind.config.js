@@ -4,5 +4,8 @@ module.exports = {
   theme: {
     extend: {},
   },
+  corePlugins: {
+    preflight: false, // 이 부분을 추가
+  },
   plugins: [],
 };

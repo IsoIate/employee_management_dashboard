@@ -1,8 +1,8 @@
+import Navibar from "@/components/Navibar";
 import "../styles/globals.css";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 export const metadata = {
-  title: "Travel Planner",
+  title: "Employee Management Dashboard",
 };
 
 export default function RootLayout({
@@ -12,7 +12,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body className="bg-white text-gray-900">{children}</body>
+      <body className="bg-white text-gray-900">
+        <Navibar></Navibar>
+        {children}
+      </body>
     </html>
   );
 }
