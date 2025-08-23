@@ -1,23 +1,28 @@
-import mongoose from "mongoose";
+import { MongoClient, Db } from "mongodb";
 
-const MONGO_URI = process.env.MONGO_URI || "";
+const uri = process.env.MONGODB_URI;
+const options = {}; // options는 필요에 따라 추가
 
-if (!MONGO_URI) throw new Error("Please define MONGO_URI in .env.local");
+let client: MongoClient;
+let clientPromise: Promise<MongoClient>;
 
-let cached = (global as any).mongoose;
-
-if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null };
+if (!uri) {
+  throw new Error("Please add your Mongo URI to .env.local");
 }
 
-async function connectToDatabase() {
-  if (cached.conn) return cached.conn;
+if (process.env.NODE_ENV === "development") {
+  let globalWithMongo = global as typeof globalThis & {
+    _mongoClientPromise: Promise<MongoClient>;
+  };
 
-  if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGO_URI).then((m) => m);
+  if (!globalWithMongo._mongoClientPromise) {
+    client = new MongoClient(uri, options);
+    globalWithMongo._mongoClientPromise = client.connect();
   }
-  cached.conn = await cached.promise;
-  return cached.conn;
+  clientPromise = globalWithMongo._mongoClientPromise;
+} else {
+  client = new MongoClient(uri, options);
+  clientPromise = client.connect();
 }
 
-export default connectToDatabase;
+export default clientPromise;

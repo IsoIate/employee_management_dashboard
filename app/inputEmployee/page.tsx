@@ -1,10 +1,12 @@
 "use client";
 
 import { Employee } from "@/types/Employees";
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export default function InputEmployees() {
   const [formData, setFormData] = useState<Employee>({
+    id: 0,
     name: "",
     position: "",
     department: "",
@@ -24,6 +26,7 @@ export default function InputEmployees() {
     alert("사원 정보가 성공적으로 등록되었습니다. (콘솔 로그 확인)");
     // 실제 API 호출 로직을 여기에 추가
     setFormData({
+      id: 0,
       name: "",
       position: "",
       department: "",

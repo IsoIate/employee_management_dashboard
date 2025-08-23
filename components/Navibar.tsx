@@ -41,6 +41,12 @@ export default function Navibar() {
                     </a>
                     <a
                       className="text-stone-50  hover:text-black px-3 py-2 rounded-md text-md font-medium no-underline"
+                      href="/leaveEmployees"
+                    >
+                      퇴사사원목록
+                    </a>
+                    <a
+                      className="text-stone-50  hover:text-black px-3 py-2 rounded-md text-md font-medium no-underline"
                       href="/#"
                     >
                       관리자페이지

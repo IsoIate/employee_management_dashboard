@@ -24,14 +24,23 @@ ChartJS.register(
 
 type Props = {
   employees: Employee[];
+  leaveEmployees: Employee[];
   className?: string;
 };
 
-export default function PersonnelChartCard({ employees }: Props) {
-  const startDate = new Date("2022-01-01");
-  const endDate = new Date("2025-8-31");
+export default function PersonnelChartCard({
+  employees,
+  leaveEmployees,
+}: Props) {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
 
-  // 월별 데이터 배열
+  const startDate = `${year - 1}-${month}-${day}`;
+  const endDate = `${year}-${month}-${day}`;
+
+  // 월별 입, 퇴사 직원 데이터
   const months = eachMonthOfInterval({ start: startDate, end: endDate }).map(
     (date) => format(date, "yyyy-MM")
   );
@@ -41,13 +50,18 @@ export default function PersonnelChartCard({ employees }: Props) {
   );
 
   const leaveCounts = months.map(
-    (month) => employees.filter((e) => e.leaveDate?.startsWith(month)).length
+    (month) =>
+      leaveEmployees.filter((e) => e.leaveDate?.startsWith(month)).length
   );
 
+  // 1년간 입사, 퇴사한 직원 수 카운트
+  const prevStartCounts = startCounts.reduce((num, sum) => num + sum, 0);
+  const prevLeaveCounts = leaveCounts.reduce((num, sum) => num + sum, 0);
+
   // 재직 인원 계산
-  let activeCount = 0;
+  let activeCount = employees.length - (prevStartCounts - prevLeaveCounts);
   const activeCounts = months.map((month, idx) => {
-    if (idx === 0) activeCount = startCounts[0] - leaveCounts[0];
+    if (idx === 0) activeCount = activeCount + startCounts[0] - leaveCounts[0];
     else activeCount = activeCount + startCounts[idx] - leaveCounts[idx];
     return activeCount;
   });
@@ -61,7 +75,7 @@ export default function PersonnelChartCard({ employees }: Props) {
         data: activeCounts,
         borderColor: "rgba(75,192,192,1)",
         backgroundColor: "rgba(75,192,192,0.2)",
-        yAxisID: "y",
+        yAxisID: "y1",
       },
       {
         type: "bar" as const,
@@ -87,11 +101,27 @@ export default function PersonnelChartCard({ employees }: Props) {
     scales: {
       y: {
         beginAtZero: true,
+        min: 0,
+        max: Math.round((prevStartCounts + prevLeaveCounts) / 2),
         stacked: false,
+        ticks: {
+          stepSize: 1,
+        },
         title: {
           display: true,
           text: "인원 수",
         },
+      },
+
+      y1: {
+        beginAtZero: true,
+        min: 0,
+        max: Math.round(activeCount * 2),
+        stacked: false,
+        grid: {
+          drawOnChartArea: false,
+        },
+        display: false,
       },
 
       x: {
