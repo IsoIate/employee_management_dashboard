@@ -1,15 +1,13 @@
 
-# 0. Get Started (서비스 시작)
+# 0. Getting Started (서비스 시작)
 <!-- <a href="https://movie-finder-ahqzpeg0u-isolates-projects.vercel.app/" > MovieFinder <a/>-->
 
 <br/>
 <br/>
 
 # 1. Project Overview (프로젝트 개요)
-- 프로젝트 이름: Travel planner
-- 프로젝트 설명: 이 프로젝트는 Google Map API를 활용해 여행 경로, 이동시간 등을 검색하고 일정을 계획하는 기능을 구현한
-  <br/>
-  Next.js / TypeScript 기반의 웹앱입니다.<br/>
+- 프로젝트 이름: Employee Management
+- 프로젝트 설명: 이 프로젝트는 사원 정보 관리 및 조회를 위한 Next.js / TypeScript 기반의 웹앱 프로젝트입니다.
   <!--  검색창과 장르 필터, 인기·최신 영화 탭을 통해 사용자 UX 흐름을 고려했으며, 실시간 API fetch 및 간단한 라우팅 구조를 구현했습니다. -->
 
 <br/>
@@ -56,7 +54,7 @@
 <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css&logoColor=white"> <img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=TailwindCSS&logoColor=white"/> ![Bootstrap](https://img.shields.io/badge/bootstrap-%238511FA.svg?style=for-the-badge&logo=bootstrap&logoColor=white) <img src="https://img.shields.io/badge/fontawesome-538DD7?style=for-the-badge&logo=fontawesome&logoColor=white"/>
 
 ## 4.2 Frotend
-<img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"> <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white"/>
+<img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"> <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white"/>  
 
 ## 4.3 Backend
 <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white"/>
@@ -64,10 +62,7 @@
 ## 4.4 Server
 <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=MongoDB&logoColor=white"/>
 
-## 4.5 API
-<img src="https://img.shields.io/badge/googlemaps-4285F4?style=for-the-badge&logo=googlemaps&logoColor=white"/>
-
-## 4.6 Cooperation
+## 4.5 Cooperation
 <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white"/>   <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"/> 
 
 <br/>
