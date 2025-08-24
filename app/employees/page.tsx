@@ -8,7 +8,9 @@ import EmployeeDetail from "@/components/EmployeeDetail";
 
 export default function Employees() {
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const openModal = useModalStore((state) => state.openModal);
+
+  // 추후 모달 사용시 참고용
+  // const openModal = useModalStore((state) => state.openModal);
 
   useEffect(() => {
     axios.get("/api/employees").then((res) => {
@@ -18,7 +20,7 @@ export default function Employees() {
 
   return (
     <>
-      <EmployeeDetail />
+      {/* <EmployeeDetail /> */}
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">사원 목록</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -27,7 +29,8 @@ export default function Employees() {
               key={employee.id}
               className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center transform transition duration-300 hover:scale-105"
               onClick={() => {
-                openModal(employee.id);
+                // openModal(employee.id);
+                location.href = `/employees/${employee.id}`;
               }}
             >
               <img

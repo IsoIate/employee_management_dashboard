@@ -1,5 +1,7 @@
 "use client";
 
+// 추후 모달 사용시 참고용
+
 import { Employee } from "@/types/Employees";
 import axios from "axios";
 import { useEffect, useState } from "react";
