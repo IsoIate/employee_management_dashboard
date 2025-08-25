@@ -98,6 +98,11 @@ export default function PersonnelChartCard({
     responsive: true,
     maintainAspectRatio: false,
     interaction: { mode: "index" },
+    plugins: {
+      legend: {
+        position: "bottom" as const,
+      },
+    },
     scales: {
       y: {
         beginAtZero: true,
@@ -132,7 +137,10 @@ export default function PersonnelChartCard({
 
   return (
     <div className="bg-white p-4 rounded shadow w-full h-80 flex items-center justify-center">
-      <Chart type="bar" data={data} options={options} />
+      <div className="w-full h-[300px] pb-[48px]">
+        <h2 className="mb-2">인원 규모</h2>
+        <Chart type="bar" data={data} options={options} />
+      </div>
     </div>
   );
 }

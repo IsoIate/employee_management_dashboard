@@ -1,136 +1,367 @@
-"use client";
+// "use client";
 
-import { Employee } from "@/types/Employees";
-import axios from "axios";
-import { useEffect, useState } from "react";
+// import axios from "axios";
+// import React, { useEffect, useState } from "react";
+// import { Employee } from "@/types/Employees";
+// import Loading from "@/components/Loading";
+// import { useRouter } from "next/navigation";
 
-export default function InputEmployees() {
-  const [formData, setFormData] = useState<Employee>({
-    id: 0,
-    name: "",
-    position: "",
-    department: "",
-    email: "",
-  });
+// interface Params {
+//   Props: {
+//     employeeId: number;
+//   };
+// }
 
-  // 입력 필드 변경 핸들러
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+// export default function InputEmployee({ params }: any) {
+//   const navigate = useRouter();
+//   const [isLoading, setIsLoading] = useState(true);
+//   const [employeeData, setEmployeeData] = useState<Employee>({
+//     id: 0,
+//     name: "",
+//     email: "",
+//     department: "",
+//     position: "",
+//     gender: "",
+//     age: 0,
+//     memo: "",
+//     status: "",
+//     form: "",
+//     startDate: "",
+//     leaveDate: "",
+//     profileImage: "",
+//   });
+//   const [gender, setGender] = useState("");
+//   const [emailValidate, setEmailValidate] = useState("invisible");
+//   const [employeeStatus, setEmployeeStatus] = useState("status_1");
+//   const [employeeForm, setEmployeeForm] = useState("form_1");
 
-  // 폼 제출 핸들러
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("등록할 사원 정보:", formData);
-    alert("사원 정보가 성공적으로 등록되었습니다. (콘솔 로그 확인)");
-    // 실제 API 호출 로직을 여기에 추가
-    setFormData({
-      id: 0,
-      name: "",
-      position: "",
-      department: "",
-      email: "",
-    });
-  };
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-lg p-8 space-y-8 bg-white rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center text-gray-900">
-          사원 등록
-        </h2>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {/* 이름 입력 필드 */}
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700"
-            >
-              이름
-            </label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              required
-              value={formData.name}
-              onChange={handleChange}
-              className="relative block w-full px-3 py-2 mt-1 placeholder-gray-400 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="홍길동"
-            />
-          </div>
+//   useEffect(() => {
+//     // axios
+//     //   .post(`/api/employees`, {
+//     //     id: params.id,
+//     //   })
+//     //   .then((res) => {
+//     //     setEmployeeData(res.data);
+//     //     setGender(res.data.gender);
+//     //     setEmployeeStatus(res.data.status);
+//     //     setEmployeeForm(res.data.form);
+//     //     setIsLoading(false);
+//     //   })
+//     //   .catch((e) => {
+//     //     console.log(e);
+//     //   });
+//   }, []);
 
-          {/* 직책 입력 필드 */}
-          <div>
-            <label
-              htmlFor="position"
-              className="block text-sm font-medium text-gray-700"
-            >
-              직책
-            </label>
-            <input
-              id="position"
-              name="position"
-              type="text"
-              required
-              value={formData.position}
-              onChange={handleChange}
-              className="relative block w-full px-3 py-2 mt-1 placeholder-gray-400 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="프론트엔드 개발자"
-            />
-          </div>
+//   const dataChange = (
+//     e: React.ChangeEvent<
+//       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+//     >
+//   ) => {
+//     const { name, value } = e.target;
+//     console.log(name, value);
 
-          {/* 부서 입력 필드 */}
-          <div>
-            <label
-              htmlFor="department"
-              className="block text-sm font-medium text-gray-700"
-            >
-              부서
-            </label>
-            <input
-              id="department"
-              name="department"
-              type="text"
-              required
-              value={formData.department}
-              onChange={handleChange}
-              className="relative block w-full px-3 py-2 mt-1 placeholder-gray-400 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="개발팀"
-            />
-          </div>
+//     // 이메일 검증
+//     if (e.target.name === "email") {
+//       const vaildEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+//       const vaildResult = vaildEmail.test(value);
 
-          {/* 이메일 입력 필드 */}
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              이메일
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              value={formData.email}
-              onChange={handleChange}
-              className="relative block w-full px-3 py-2 mt-1 placeholder-gray-400 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="employee@company.com"
-            />
-          </div>
+//       if (!vaildResult) setEmailValidate("visible");
+//       else setEmailValidate("invisible");
+//     }
 
-          {/* 제출 버튼 */}
-          <div>
-            <button
-              type="submit"
-              className="w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md group hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              등록하기
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-}
+//     if (e.target.name === "gender") setGender(e.target.value);
+
+//     setEmployeeData((prev) => ({
+//       ...prev,
+//       [name]: value,
+//     }));
+//   };
+
+//   const employeeDataSubmit = (e: React.FormEvent) => {
+//     e.preventDefault();
+//     console.log("수정된 사원 정보:", employeeData);
+
+//     axios
+//       .put(`/api/employees/${params.id}`, {
+//         data: employeeData,
+//       })
+//       .then((res) => {
+//         if (res.data.res) {
+//           alert(
+//             "정상적으로 수정 되었습니다.\n잠시 후 사원 목록 페이지로 돌아갑니다."
+//           );
+//           navigate.push("/employees");
+//         } else {
+//           alert("수정에 문제가 생겼습니다.");
+//         }
+//       })
+//       .catch((e) => {
+//         console.log(e);
+//       });
+//   };
+
+//   if (isLoading || !employeeData) {
+//     return <Loading />;
+//   }
+
+//   return (
+//     <>
+//       <div className="min-h-screen p-4 sm:p-8 bg-gray-100 ">
+//         <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-xl ">
+//           <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center ">
+//             사원 정보 수정
+//           </h1>
+
+//           <form onSubmit={employeeDataSubmit} className="space-y-6">
+//             {/* 프로필 이미지 */}
+
+//             <div className="flex flex-col items-center space-y-4 mb-20">
+//               <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-gray-300 ">
+//                 <img
+//                   src={
+//                     employeeData.profileImage || "/images/default-profile.jpg"
+//                   }
+//                   alt="프로필 이미지"
+//                   className="w-full h-full object-cover"
+//                 />
+//               </div>
+//               <label className="bg-blue-400 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-blue-500">
+//                 이미지 변경
+//                 <input type="file" className="hidden" />
+//               </label>
+//             </div>
+
+//             <h5 className="mb-2 text-gray-700"> 개인정보 </h5>
+//             <hr className="mb-5 border-gray-400" />
+
+//             {/* 이름, 사원번호 */}
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//               <div>
+//                 <label className="block text-sm font-medium mb-2 text-gray-700">
+//                   이름
+//                 </label>
+//                 <input
+//                   type="text"
+//                   name="name"
+//                   value={employeeData.name}
+//                   onChange={dataChange}
+//                   className="form-control"
+//                 />
+//               </div>
+//               <div>
+//                 <label className="block text-sm font-medium mb-2 text-gray-700">
+//                   사원번호
+//                 </label>
+//                 <input
+//                   type="text"
+//                   name="id"
+//                   className="form-control bg-gray-300 pointer-events-none"
+//                   value={employeeData.id}
+//                   readOnly
+//                 />
+//               </div>
+//             </div>
+
+//             {/* 나이, 성별, 이메일 */}
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//                 <div>
+//                   <label className="block text-sm font-medium mb-2 text-gray-700">
+//                     나이
+//                   </label>
+//                   <input
+//                     type="number"
+//                     name="age"
+//                     className="form-control"
+//                     value={employeeData.age}
+//                     onChange={dataChange}
+//                   />
+//                 </div>
+//                 <div>
+//                   <label className="block text-sm font-medium mb-2 text-gray-700">
+//                     성별
+//                   </label>
+//                   <div className="flex flex-row gap-3">
+//                     <div className="form-check">
+//                       <input
+//                         className="form-check-input"
+//                         type="radio"
+//                         id="male"
+//                         name="gender"
+//                         value="Male"
+//                         checked={gender === "Male"}
+//                         onChange={dataChange}
+//                       />
+//                       <label htmlFor="male" className="form-check-label">
+//                         남성
+//                       </label>
+//                     </div>
+//                     <div className="form-check">
+//                       <input
+//                         className="form-check-input"
+//                         type="radio"
+//                         id="female"
+//                         name="gender"
+//                         value="Female"
+//                         checked={gender === "Female"}
+//                         onChange={dataChange}
+//                       />
+//                       <label htmlFor="female" className="form-check-label">
+//                         여성
+//                       </label>
+//                     </div>
+//                   </div>
+//                 </div>
+//               </div>
+//               <div>
+//                 <label className="block text-sm font-medium mb-2 text-gray-700">
+//                   이메일
+//                 </label>
+//                 <input
+//                   type="email"
+//                   name="email"
+//                   value={employeeData.email}
+//                   onChange={dataChange}
+//                   className="form-control"
+//                 />
+//                 <div
+//                   className={`alert alert-warning mt-2 ${emailValidate}`}
+//                   role="alert"
+//                 >
+//                   <p className="m-0"> 이메일 주소를 확인해주세요. </p>
+//                 </div>
+//               </div>
+//             </div>
+
+//             <h5 className="mb-2 text-gray-700"> 직원정보 </h5>
+//             <hr className="mb-5 border-gray-400" />
+
+//             {/* 부서, 직책 */}
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//               <div>
+//                 <label className="block text-sm font-medium mb-2 text-gray-700">
+//                   부서
+//                 </label>
+//                 <input
+//                   type="text"
+//                   name="department"
+//                   value={employeeData.department}
+//                   onChange={dataChange}
+//                   className="form-control"
+//                 />
+//               </div>
+//               <div>
+//                 <label className="block text-sm font-medium mb-2 text-gray-700">
+//                   직급
+//                 </label>
+//                 <input
+//                   type="text"
+//                   name="position"
+//                   value={employeeData.position}
+//                   className="form-control w-full"
+//                   onChange={dataChange}
+//                 />
+//               </div>
+//             </div>
+
+//             {/* 상태, 고용형태 */}
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//               <div>
+//                 <label className="block text-sm font-medium mb-2 text-gray-700">
+//                   상태
+//                 </label>
+//                 <select
+//                   className="form-select"
+//                   aria-label="Default select example"
+//                   value={employeeStatus}
+//                   onChange={dataChange}
+//                 >
+//                   <option value="status_1">재직</option>
+//                   <option value="status_2">휴직</option>
+//                   <option value="status_3">퇴사</option>
+//                 </select>
+//               </div>
+//               <div>
+//                 <label className="block text-sm font-medium mb-2 text-gray-700">
+//                   고용형태
+//                 </label>
+//                 <select
+//                   className="form-select"
+//                   aria-label="Default select example"
+//                   value={employeeForm}
+//                   onChange={dataChange}
+//                 >
+//                   <option value="form_1">정규직</option>
+//                   <option value="form_2">계약직</option>
+//                   <option value="form_3">인턴/알바</option>
+//                 </select>
+//               </div>
+//             </div>
+
+//             {/* 입사, 퇴사일 */}
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//               <div>
+//                 <label className="block text-sm font-medium mb-2 text-gray-700">
+//                   입사일
+//                 </label>
+//                 <input
+//                   type="date"
+//                   name="startDate"
+//                   value={employeeData.startDate}
+//                   onChange={dataChange}
+//                   className="form-control"
+//                 />
+//               </div>
+//               <div>
+//                 <label className="block text-sm font-medium mb-2 text-gray-700">
+//                   퇴사일
+//                 </label>
+//                 <input
+//                   type="date"
+//                   name="leaveDate"
+//                   value={employeeData.leaveDate}
+//                   className="form-control bg-gray-300 pointer-events-none"
+//                   readOnly
+//                 />
+//               </div>
+//             </div>
+
+//             {/* 메모 */}
+//             <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+//               <div>
+//                 <label className="block text-sm font-medium mb-2 text-gray-700">
+//                   메모
+//                 </label>
+//                 <textarea
+//                   className="form-control resize-none w-full h-40"
+//                   name="memo"
+//                   value={employeeData.memo}
+//                   onChange={dataChange}
+//                 ></textarea>
+//               </div>
+//             </div>
+
+//             {/* 버튼 섹션 */}
+//             <div className="flex justify-end space-x-4 pt-4">
+//               <button
+//                 type="button"
+//                 className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-400"
+//                 onClick={() => {
+//                   navigate.back();
+//                 }}
+//               >
+//                 취소
+//               </button>
+//               <button
+//                 type="submit"
+//                 className="px-6 py-2 bg-blue-400 text-white rounded-md border-none hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+//               >
+//                 수정 완료
+//               </button>
+//             </div>
+//           </form>
+//         </div>
+//       </div>
+//     </>
+//   );
+// }

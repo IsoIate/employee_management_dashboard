@@ -59,7 +59,7 @@ export default function TotalEmployeesChartCard({
       {/* <div className="bg-white p-4 rounded shadow w-80 h-80"> */}
       <div className="bg-white p-4 rounded shadow flex items-center justify-center">
         <div className="w-64 h-full xl:w-96">
-          <h2 className="font-bold mb-2">재직 인원</h2>
+          <h2 className="mb-2">재직 인원</h2>
           <Doughnut
             key={totalEmployees} // state가 변경되면 재렌더링 되도록 key값을 변경해서 새로운 값 반영
             data={data}

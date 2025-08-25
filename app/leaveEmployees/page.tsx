@@ -1,17 +1,38 @@
 "use client";
 
+import EmployeesPagination from "@/components/EmployeesPagination";
+import Loading from "@/components/Loading";
 import { Employee } from "@/types/Employees";
 import axios from "axios";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function LeaveEmployees() {
+type Params = {
+  searchParams: {
+    page: number;
+  };
+};
+
+export default function LeaveEmployees({ searchParams }: Params) {
+  const navigate = useRouter();
+  const pathname = usePathname();
+  const currentPage = Number(searchParams.page) || parseInt("1");
+  const [totalPages, setTotalPages] = useState(0);
   const [leaveEmployees, setLeaveEmployees] = useState<Employee[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    axios.get("/api/employees").then((res) => {
-      setLeaveEmployees(res.data.leaveEmployees);
-    });
-  }, []);
+    axios
+      .get(`/api/leaveEmployees?page=${currentPage}&limit=12`)
+      .then((res) => {
+        setLeaveEmployees(res.data.employees);
+        setIsLoading(false);
+      });
+  }, [searchParams, currentPage]);
+
+  if (isLoading || !leaveEmployees) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -22,6 +43,9 @@ export default function LeaveEmployees() {
             <div
               key={employee.id}
               className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center transform transition duration-300 hover:scale-105"
+              onClick={() => {
+                navigate.push(`/employees/${employee.id}`);
+              }}
             >
               <img
                 src={employee.profileImage}
@@ -37,6 +61,11 @@ export default function LeaveEmployees() {
           ))}
         </div>
       </div>
+      <EmployeesPagination
+        pathname={pathname}
+        currentPage={currentPage}
+        totalPages={totalPages}
+      ></EmployeesPagination>
     </>
   );
 }

@@ -51,6 +51,9 @@ export default function DepartmentChartCard({ employees, className }: Props) {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    ticks: {
+      stepSize: 2,
+    },
     plugins: {
       legend: {
         position: "bottom" as const,
@@ -63,7 +66,7 @@ export default function DepartmentChartCard({ employees, className }: Props) {
       <div className={className}>
         <div className="bg-white p-4 rounded shadow flex items-center justify-center">
           <div className="w-64 h-[300px] pb-[48px] xl:w-96 xl:h-[430px]">
-            <h2 className="font-bold mb-2">부서별 분포</h2>
+            <h2 className="mb-2">부서별 분포</h2>
             <Bar data={data} options={options} />
           </div>
         </div>

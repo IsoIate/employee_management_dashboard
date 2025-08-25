@@ -3,10 +3,13 @@ export interface Employee {
   name: string;
   email: string;
   department: string;
-  position?: string;
-  gender?: string;
-  age?: number;
-  startDate?: string;
+  position: string;
+  gender: string;
+  age: number;
+  memo?: string;
+  status: string;
+  form: string;
+  startDate: string;
   leaveDate?: string;
-  profileImage?: string;
+  profileImage: string;
 }

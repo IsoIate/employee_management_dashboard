@@ -15,7 +15,7 @@ export default function Dashboard() {
   const [leaveEmployees, setLeaveEmployees] = useState<Employee[]>([]);
 
   useEffect(() => {
-    axios.get("/api/employees").then((res) => {
+    axios.get("/api/totalEmployees").then((res) => {
       setEmployees(res.data.employees);
       setLeaveEmployees(res.data.leaveEmployees);
     });
