@@ -33,36 +33,50 @@ export default function EmployeesPagination({
 
   return (
     <>
-      <Container className="d-flex justify-content-center">
-        <Pagination>
-          <Pagination.Item
-            className="me-3"
+      <div className="flex justify-center mt-6">
+        <nav className="inline-flex items-center space-x-2">
+          <button
             onClick={() => goToPage(currentPage - 1)}
             disabled={currentPage === 1}
+            className={`px-3 py-1 rounded-lg border text-sm font-medium 
+        ${
+          currentPage === 1
+            ? "text-gray-400 border-gray-300 cursor-not-allowed"
+            : "text-gray-700 border-gray-300 hover:bg-gray-100"
+        }`}
           >
-            {" "}
-            ← 이전{" "}
-          </Pagination.Item>
+            ← 이전
+          </button>
+
           {pageNumbers.map((page) => (
-            <Pagination.Item
-              active={page === currentPage}
-              onClick={() => goToPage(page)}
+            <button
               key={page}
+              onClick={() => goToPage(page)}
+              className={`px-3 py-1 rounded-lg border text-sm font-medium
+          ${
+            page === currentPage
+              ? "bg-blue-500 text-white border-blue-500"
+              : "text-gray-700 border-gray-300 hover:bg-gray-100"
+          }`}
             >
-              {" "}
-              {page}{" "}
-            </Pagination.Item>
+              {page}
+            </button>
           ))}
-          <Pagination.Item
-            className="ms-3"
+
+          <button
             onClick={() => goToPage(currentPage + 1)}
             disabled={currentPage === totalPages}
+            className={`px-3 py-1 rounded-lg border text-sm font-medium
+        ${
+          currentPage === totalPages
+            ? "text-gray-400 border-gray-300 cursor-not-allowed"
+            : "text-gray-700 border-gray-300 hover:bg-gray-100"
+        }`}
           >
-            {" "}
-            다음 →{" "}
-          </Pagination.Item>
-        </Pagination>
-      </Container>
+            다음 →
+          </button>
+        </nav>
+      </div>
     </>
   );
 }

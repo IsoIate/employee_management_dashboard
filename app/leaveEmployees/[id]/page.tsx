@@ -7,14 +7,14 @@ import Loading from "@/components/Loading";
 import { useParams } from "next/navigation";
 import EmployeeDetailCard from "@/components/EmployeeDetailCard";
 
-export default function EmployeeDetail() {
+export default function LeaveEmployeeDetail() {
   const params = useParams<{ id: string }>();
   const [isLoading, setIsLoading] = useState(true);
   const [employees, setEmployees] = useState<Employee>();
 
   useEffect(() => {
     axios
-      .post(`/api/employees`, {
+      .post(`/api/leaveEmployees`, {
         id: params.id,
       })
       .then((res) => {

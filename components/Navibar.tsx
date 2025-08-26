@@ -29,7 +29,7 @@ export default function Navibar() {
                   <div className="flex items-baseline ml-10 space-x-4">
                     <a
                       className="text-stone-50  hover:text-black px-3 py-2 rounded-md text-md font-medium no-underline"
-                      href="/employees/input"
+                      href="/inputEmployee"
                     >
                       사원등록
                     </a>

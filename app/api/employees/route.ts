@@ -21,12 +21,19 @@ export async function GET(req: NextRequest) {
       employeesCollection.find({}).skip(skip).limit(limit).toArray(),
     ]);
 
+    // 페이징 되지 않은 전체 재직직원 데이터
+    const allEmployeesData = await db
+      .collection<Employee>("Employees")
+      .find({})
+      .toArray();
+
     // 4. 전체 페이지 수 계산
     const totalPages = Math.ceil(totalEmployees / limit);
 
     // 5. 클라이언트에 응답 전송
     return NextResponse.json({
       employees,
+      allEmployeesData,
       currentPage: page,
       totalPages,
       itemsPerPage: limit,
@@ -42,7 +49,6 @@ export async function POST(req: NextRequest) {
     const client = await clientPromise;
     const db = client.db("Employee_Management");
     const reqData = await req.json();
-
     const data: WithId<Employee> | null = await db
       .collection<Employee>("Employees")
       .findOne({ id: Number(reqData.id) });
