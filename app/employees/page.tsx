@@ -3,8 +3,6 @@
 import { Employee } from "@/types/Employees";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useModalStore } from "../../store/modalStore";
-// import EmployeeDetail from "@/components/EmployeeDetail";
 import { usePathname, useRouter } from "next/navigation";
 import EmployeesPagination from "@/components/EmployeesPagination";
 import Loading from "@/components/Loading";
@@ -26,9 +24,6 @@ export default function Employees({ searchParams }: Params) {
   const [searchResult, setSearchResult] = useState<Employee[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 추후 모달 사용시 참고용
-  // const openModal = useModalStore((state) => state.openModal);
-
   useEffect(() => {
     axios.get(`/api/employees?page=${currentPage}&limit=12`).then((res) => {
       setTotalPages(res.data.totalPages);
@@ -48,6 +43,7 @@ export default function Employees({ searchParams }: Params) {
         <h1 className="text-3xl font-bold text-gray-800 mb-6">사원 목록</h1>
         <EmployeeSearchBar
           employees={allEmployeesData}
+          searchResult={searchResult}
           setSearchResult={setSearchResult}
         ></EmployeeSearchBar>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -57,7 +53,6 @@ export default function Employees({ searchParams }: Params) {
                   key={employee.id}
                   className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center transform transition duration-300 hover:scale-105"
                   onClick={() => {
-                    // openModal(employee.id);
                     navigate.push(`/employees/${employee.id}`);
                   }}
                 >

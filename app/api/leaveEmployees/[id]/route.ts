@@ -22,7 +22,7 @@ export async function PUT(
     //   }
     // );
 
-    const data = await db.collection<Employee>("Employees").updateOne(
+    const data = await db.collection<Employee>("LeaveEmployees").updateOne(
       { id: Number(id) },
       {
         $set: {
@@ -61,36 +61,31 @@ export async function POST(
 
     // 기존 데이터 가져오기
     const prevData = await db
-      .collection<Employee>("Employees")
+      .collection<Employee>("LeaveEmployees")
       .findOne({ id: id });
 
     if (!prevData) {
       return NextResponse.json({ res: "해당 사원이 존재하지 않습니다." });
     } else {
-      const today = new Date();
-      const year = today.getFullYear();
-      const month = String(today.getMonth() + 1).padStart(2, "0");
-      const day = String(today.getDate()).padStart(2, "0");
-
-      // 퇴직날짜 저장
-      prevData.leaveDate = `${year}-${month}-${day}`;
-      prevData.status = "status_3";
+      // 퇴직날짜 초기화
+      prevData.leaveDate = "";
+      prevData.status = "status_1";
     }
 
-    // 퇴직사원 테이블에 저장
+    // 재직사원 테이블에 저장
     const insertData = await db
-      .collection<Employee>("LeaveEmployees")
+      .collection<Employee>("Employees")
       .insertOne(prevData);
 
-    // 재직사원 테이블에서 제거
+    // 퇴직사원 테이블에서 제거
     const deleteData = await db
-      .collection<Employee>("Employees")
+      .collection<Employee>("LeaveEmployees")
       .deleteOne({ id: id });
 
     if (insertData.acknowledged && deleteData.acknowledged)
       return NextResponse.json({
         result: true,
-        message: "성공적으로 퇴직처리 되었습니다.",
+        message: "성공적으로 복직처리 되었습니다.",
       });
     else
       return NextResponse.json({

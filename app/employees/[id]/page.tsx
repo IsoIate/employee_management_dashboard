@@ -30,8 +30,6 @@ export default function EmployeeDetail() {
     return <Loading />;
   }
 
-  console.log(employees);
-
   return (
     <>
       <EmployeeDetailCard employees={employees}></EmployeeDetailCard>

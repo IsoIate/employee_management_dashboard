@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import api from "../lib/api";
+// import api from "../lib/api";
 import { Employee } from "../types/Employees";
-import ChartCard from "../components/ChartCard";
+// import ChartCard from "../components/ChartCard";
 import GenderChartCard from "@/components/GenderChartCard";
 import AgeChartCard from "@/components/AgeChartCard";
 import DepartmentChartCard from "@/components/DepartmentChartCard";

@@ -30,7 +30,7 @@ export default function LeaveEmployeeDetail() {
     return <Loading />;
   }
 
-  console.log(employees);
+  // console.log(employees);
 
   return (
     <>

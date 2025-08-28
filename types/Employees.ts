@@ -12,4 +12,5 @@ export interface Employee {
   startDate: string;
   leaveDate?: string;
   profileImage: string;
+  [key: string]: any;
 }

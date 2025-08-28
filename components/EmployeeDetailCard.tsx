@@ -4,6 +4,8 @@ import { Employee } from "@/types/Employees";
 import Loading from "@/components/Loading";
 import { usePathname, useRouter } from "next/navigation";
 import axios from "axios";
+import EmployeeStatusModal from "./EmployeeStatusModal";
+import { useModalStore } from "@/store/modalStore";
 
 const defaultEmployee: Employee = {
   id: 0,
@@ -34,6 +36,7 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
   const [emailValidate, setEmailValidate] = useState("invisible");
   const [employeeStatus, setEmployeeStatus] = useState("status_1");
   const [formStatus, setFormStatus] = useState("form_1");
+  const { openModal } = useModalStore();
   const [employeeData, setEmployeeData] = useState<Employee>({
     id: 0,
     name: "",
@@ -49,6 +52,8 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
     leaveDate: "",
     profileImage: "",
   });
+
+  console.log(employees);
 
   useEffect(() => {
     if (employees) {
@@ -80,8 +85,8 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
 
     // radio, select 상태변경
     if (name === "gender") setGender(value);
-    if (name === "employeeStatus") setEmployeeStatus(value);
-    if (name === "employeeForm") setFormStatus(value);
+    if (name === "status") setEmployeeStatus(value);
+    if (name === "form") setFormStatus(value);
 
     // 변경 값 세팅
     setEmployeeData((prev) => ({
@@ -104,7 +109,7 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
             alert(
               "정상적으로 수정 되었습니다.\n사원 목록 페이지로 돌아갑니다."
             );
-            navigate.push("/employees");
+            navigate.back();
           } else {
             alert("수정에 문제가 생겼습니다.");
           }
@@ -140,6 +145,7 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
 
   return (
     <>
+      <EmployeeStatusModal employee={employees}></EmployeeStatusModal>
       <div className="min-h-screen p-4 sm:p-8 bg-gray-100 ">
         <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-xl ">
           <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center ">
@@ -305,17 +311,21 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
                 <label className="block text-sm font-medium mb-2 text-gray-700">
                   상태
                 </label>
-                <select
-                  className="form-select"
-                  aria-label="Default select example"
-                  name="employeeStatus"
-                  value={employeeStatus || "status_1"}
-                  onChange={dataChange}
-                >
-                  <option value="status_1">재직</option>
-                  <option value="status_2">휴직</option>
-                  <option value="status_3">퇴사</option>
-                </select>
+                {employeeData.leaveDate ? (
+                  <select className="form-select" name="status" disabled>
+                    <option value="status_3">퇴사</option>
+                  </select>
+                ) : (
+                  <select
+                    className="form-select"
+                    name="status"
+                    value={employeeStatus}
+                    onChange={dataChange}
+                  >
+                    <option value="status_1">재직</option>
+                    <option value="status_2">휴직</option>
+                  </select>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium mb-2 text-gray-700">
@@ -323,8 +333,7 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
                 </label>
                 <select
                   className="form-select"
-                  aria-label="Default select example"
-                  name="employeeForm"
+                  name="form"
                   value={formStatus}
                   onChange={dataChange}
                 >
@@ -380,7 +389,7 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
               </div>
             </div>
 
-            {/* 버튼 섹션 */}
+            {/* 버튼 */}
             <div className="flex justify-end space-x-4 pt-4">
               <button
                 type="button"
@@ -391,6 +400,20 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
               >
                 취소
               </button>
+              {/* 복직, 퇴사버튼 */}
+              {newId ? (
+                ""
+              ) : (
+                <button
+                  type="button"
+                  className="px-6 py-2 border bg-rose-500 rounded-md text-white hover:bg-gray-400"
+                  onClick={() => {
+                    openModal();
+                  }}
+                >
+                  {employees?.leaveDate ? "복직" : "퇴사"}
+                </button>
+              )}
               <button
                 type="submit"
                 className="px-6 py-2 bg-blue-400 text-white rounded-md border-none hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
