@@ -5,6 +5,7 @@ import type { NextRequest } from "next/server";
 export function middleware(request: NextRequest) {
   // 1. JWT 토큰이 저장된 쿠키나 헤더를 확인 (예: 'token' 쿠키)
   const isAuthenticated = request.cookies.has("token");
+  console.log("middle", isAuthenticated);
 
   // 2. 보호된 경로(로그인이 필요한 페이지)를 정의
   const protectedRoutes = [

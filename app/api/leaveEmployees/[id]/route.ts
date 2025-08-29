@@ -13,15 +13,6 @@ export async function PUT(
     const reqData = await req.json();
     const id = params.id;
 
-    // const data = await db.collection<Employee>("Employees").updateMany(
-    //   {
-    //     status: "status_3",
-    //   },
-    //   {
-    //     $set: { status: "status_1" },
-    //   }
-    // );
-
     const data = await db.collection<Employee>("LeaveEmployees").updateOne(
       { id: Number(id) },
       {
