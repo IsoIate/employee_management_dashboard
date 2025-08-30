@@ -40,15 +40,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(isPasswordValid);
-
     // JWT 토큰 생성
     const token = jwt.sign(
       { email: user.email, username: user.username, role: user.role }, // 토큰에 담을 정보
       JWT_SECRET,
       { expiresIn: "1h" } // 토큰 만료 시간
     );
-    console.log(token);
 
     // 토큰을 JSON 응답으로 반환
     return NextResponse.json(

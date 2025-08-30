@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import axios from "axios";
 import EmployeeStatusModal from "./EmployeeStatusModal";
 import { useModalStore } from "@/store/modalStore";
+import { useSession } from "next-auth/react";
 
 const defaultEmployee: Employee = {
   id: 0,
@@ -31,6 +32,8 @@ interface Props {
 export default function EmployeeDetailCard({ employees, newId }: Props) {
   const navigate = useRouter();
   const pathname = usePathname();
+  const { data: session, status } = useSession();
+  const [isRole, setIsRole] = useState(true);
   const [newEmpId, setNewId] = useState<number | undefined>(undefined);
   const [gender, setGender] = useState("");
   const [emailValidate, setEmailValidate] = useState("invisible");
@@ -53,7 +56,7 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
     profileImage: "",
   });
 
-  console.log(employees);
+  // console.log(employees);
 
   useEffect(() => {
     if (employees) {
@@ -65,6 +68,12 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
       setNewId(newId);
     }
   }, [employees, newId]);
+
+  useEffect(() => {
+    if (session?.user.role === "admin" || session?.user.role === "hr_admin")
+      setIsRole(false);
+    else setIsRole(true);
+  }, [status]);
 
   const dataChange = (
     e: React.ChangeEvent<
@@ -143,6 +152,9 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
     return <Loading />;
   }
 
+  // 세션 로딩 중에는 null 반환
+  if (status === "loading") return <Loading />;
+
   return (
     <>
       <EmployeeStatusModal employee={employees}></EmployeeStatusModal>
@@ -187,6 +199,7 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
                   value={employeeData.name}
                   onChange={dataChange}
                   className="form-control"
+                  disabled={isRole}
                 />
               </div>
               <div>
@@ -216,6 +229,7 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
                     className="form-control"
                     value={employeeData.age}
                     onChange={dataChange}
+                    disabled={isRole}
                   />
                 </div>
                 <div>
@@ -232,6 +246,7 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
                         value="Male"
                         checked={gender === "Male"}
                         onChange={dataChange}
+                        disabled={isRole}
                       />
                       <label htmlFor="male" className="form-check-label">
                         남성
@@ -246,6 +261,7 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
                         value="Female"
                         checked={gender === "Female"}
                         onChange={dataChange}
+                        disabled={isRole}
                       />
                       <label htmlFor="female" className="form-check-label">
                         여성
@@ -262,8 +278,9 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
                   type="email"
                   name="email"
                   value={employeeData.email}
-                  onChange={dataChange}
                   className="form-control"
+                  onChange={dataChange}
+                  disabled={isRole}
                 />
                 <div
                   className={`alert alert-warning mt-2 ${emailValidate}`}
@@ -287,8 +304,9 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
                   type="text"
                   name="department"
                   value={employeeData.department}
-                  onChange={dataChange}
                   className="form-control"
+                  onChange={dataChange}
+                  disabled={isRole}
                 />
               </div>
               <div>
@@ -301,6 +319,7 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
                   value={employeeData.position}
                   className="form-control w-full"
                   onChange={dataChange}
+                  disabled={isRole}
                 />
               </div>
             </div>
@@ -321,6 +340,7 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
                     name="status"
                     value={employeeStatus}
                     onChange={dataChange}
+                    disabled={isRole}
                   >
                     <option value="status_1">재직</option>
                     <option value="status_2">휴직</option>
@@ -336,6 +356,7 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
                   name="form"
                   value={formStatus}
                   onChange={dataChange}
+                  disabled={isRole}
                 >
                   <option value="form_1">정규직</option>
                   <option value="form_2">계약직</option>
@@ -354,8 +375,9 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
                   type="date"
                   name="startDate"
                   value={employeeData.startDate}
-                  onChange={dataChange}
                   className="form-control"
+                  onChange={dataChange}
+                  disabled={isRole}
                 />
               </div>
               <div>
@@ -385,6 +407,7 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
                   name="memo"
                   value={employeeData.memo}
                   onChange={dataChange}
+                  disabled={isRole}
                 ></textarea>
               </div>
             </div>
@@ -398,12 +421,13 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
                   navigate.back();
                 }}
               >
-                취소
+                돌아가기
               </button>
               {/* 복직, 퇴사버튼 */}
               {newId ? (
                 ""
-              ) : (
+              ) : session?.user.role === "admin" ||
+                session?.user.role === "hr_admin" ? (
                 <button
                   type="button"
                   className="px-6 py-2 border bg-rose-500 rounded-md text-white hover:bg-gray-400"
@@ -413,13 +437,20 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
                 >
                   {employees?.leaveDate ? "복직" : "퇴사"}
                 </button>
+              ) : (
+                ""
               )}
-              <button
-                type="submit"
-                className="px-6 py-2 bg-blue-400 text-white rounded-md border-none hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                {employees ? "수정 완료" : "등록 완료"}
-              </button>
+              {session?.user.role === "admin" ||
+              session?.user.role === "hr_admin" ? (
+                <button
+                  type="submit"
+                  className="px-6 py-2 bg-blue-400 text-white rounded-md border-none hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  {employees ? "수정 완료" : "등록 완료"}
+                </button>
+              ) : (
+                ""
+              )}
             </div>
           </form>
         </div>

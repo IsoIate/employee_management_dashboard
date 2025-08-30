@@ -39,7 +39,8 @@ export default function Login({ setPage }: Props) {
     const email = data.email;
     const password = data.password;
     const result = await signIn("credentials", {
-      redirect: false, // 리다이렉션을 수동으로 처리
+      redirect: true, 
+      callbackUrl: "/",   
       email,
       password,
     });
@@ -50,17 +51,6 @@ export default function Login({ setPage }: Props) {
     } else {
       console.log("에러 발생\nstatus : " + result.status);
     }
-    // axios
-    //   .post(`/api/login`, {
-    //     data: data,
-    //   })
-    //   .then((res) => {
-    //     if (res.data.token) {
-    //       localStorage.setItem("token", res.data.token);
-    //       navigate.push("/");
-    //     }
-    //   })
-    //   .catch((e) => console.log(e));
   };
   return (
     <>

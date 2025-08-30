@@ -3,12 +3,6 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 
-interface JWT {
-  id: string;
-  email: string;
-  name: string;
-}
-
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -43,7 +37,8 @@ export const authOptions: NextAuthOptions = {
         return {
           id: user._id.toString(),
           email: user.email,
-          name: user.name,
+          name: user.username,
+          role: user.role,
         };
       },
     }),
@@ -59,6 +54,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.name = user.name;
         token.email = user.email;
+        token.role = user.role;
       }
       return token;
     },
@@ -66,6 +62,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.name = token.name;
         session.user.email = token.email;
+        session.user.role = token.role;
       }
       return session;
     },

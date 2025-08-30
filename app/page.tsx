@@ -9,10 +9,13 @@ import DepartmentChartCard from "@/components/DepartmentChartCard";
 import TotalEmployeesChartCard from "@/components/TotalEmployeesChartCard";
 import PersonnelChartCard from "@/components/PersonnelChartCard";
 import axios from "axios";
+import { useSession } from "next-auth/react";
+import Loading from "@/components/Loading";
 
 export default function Dashboard() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [leaveEmployees, setLeaveEmployees] = useState<Employee[]>([]);
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     axios.get("/api/totalEmployees").then((res) => {
@@ -20,6 +23,16 @@ export default function Dashboard() {
       setLeaveEmployees(res.data.leaveEmployees);
     });
   }, []);
+
+  if (status === "loading") {
+    return <Loading />;
+  }
+
+  if (status === "unauthenticated") {
+    return null;
+  }
+
+  // console.log(session);
 
   return (
     <div className="flex justify-center min-h-screen">

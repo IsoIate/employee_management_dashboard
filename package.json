@@ -18,6 +18,7 @@
     "chartjs": "^0.3.24",
     "date-fns": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.542.0",
     "mongoose": "^8.17.1",
     "next": "^14.2.30",
     "next-auth": "^4.24.11",

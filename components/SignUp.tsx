@@ -88,11 +88,12 @@ export default function SignUp({ setPage }: Props) {
     }));
   }
 
-  function signUp(e: React.FormEvent) {
+  function signUpPost(e: React.FormEvent) {
     e.preventDefault();
     axios
       .post(`/api/signUp`, data)
       .then((res) => {
+        console.log(res.data);
         alert("회원가입이 완료되었습니다!");
         setPage("login");
       })
@@ -213,7 +214,9 @@ export default function SignUp({ setPage }: Props) {
                   className={`${
                     signUpValidate ? "cursor-not-allowed" : ""
                   } py-2 px-4 bg-blue-400 hover:bg-blue-500 focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full border-none transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg `}
-                  onClick={signUp}
+                  onClick={(e) => {
+                    signUpPost(e);
+                  }}
                 >
                   회원가입
                 </button>
