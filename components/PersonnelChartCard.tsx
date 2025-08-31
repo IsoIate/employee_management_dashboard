@@ -10,6 +10,8 @@ import {
   ArcElement,
   Legend,
   Tooltip,
+  LineController, 
+  BarController
 } from "chart.js";
 ChartJS.register(
   CategoryScale,
@@ -19,7 +21,9 @@ ChartJS.register(
   LineElement,
   ArcElement,
   Legend,
-  Tooltip
+  Tooltip,
+  LineController,  
+  BarController 
 );
 import { format, eachMonthOfInterval } from "date-fns";
 import { Employee } from "../types/Employees";
