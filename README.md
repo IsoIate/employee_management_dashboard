@@ -1,6 +1,6 @@
 
 # 0. Getting Started (서비스 시작)
- <a href="https://movie-finder-ahqzpeg0u-isolates-projects.vercel.app/](https://employee-management-dashboard-mauve.vercel.app/" > 사원 관리 대시보드 웹앱 <a/>
+ <a href="https://employee-management-dashboard-mauve.vercel.app/" > 사원 관리 대시보드 웹앱 <a/>
 
 <br/>
 <br/>
