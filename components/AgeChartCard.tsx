@@ -2,27 +2,6 @@
 
 import { Employee } from "../types/Employees";
 import { Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  PointElement,
-  LineElement,
-  ArcElement,
-  Legend,
-  Tooltip,
-} from "chart.js";
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  PointElement,
-  LineElement,
-  ArcElement,
-  Legend,
-  Tooltip
-);
 
 interface Props {
   employees: Employee[];
