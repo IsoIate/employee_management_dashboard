@@ -4,22 +4,43 @@ import { Employee } from "../types/Employees";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
   CategoryScale,
   LinearScale,
   BarElement,
-} from "chart.js";
-
-ChartJS.register(
+  PointElement,
+  LineElement,
   ArcElement,
-  Tooltip,
   Legend,
+  Tooltip,
+} from "chart.js";
+ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement
+  BarElement,
+  PointElement,
+  LineElement,
+  ArcElement,
+  Legend,
+  Tooltip
 );
+// import {
+//   Chart as ChartJS,
+//   ArcElement,
+//   Tooltip,
+//   Legend,
+//   CategoryScale,
+//   LinearScale,
+//   BarElement,
+// } from "chart.js";
+
+// ChartJS.register(
+//   ArcElement,
+//   Tooltip,
+//   Legend,
+//   CategoryScale,
+//   LinearScale,
+//   BarElement
+// );
 
 interface Props {
   employees: Employee[];
