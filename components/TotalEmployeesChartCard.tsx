@@ -1,10 +1,7 @@
 'use client'
 
 import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Employee } from "../types/Employees";
-
-// ChartJS.register(ArcElement, Tooltip, Legend);
 
 type Props = {
   employees: Employee[];
@@ -58,7 +55,6 @@ export default function TotalEmployeesChartCard({
 
   return (
     <div className={className}>
-      {/* <div className="bg-white p-4 rounded shadow w-80 h-80"> */}
       <div className="bg-white p-4 rounded shadow flex items-center justify-center">
         <div className="w-64 h-full xl:w-96">
           <h2 className="mb-2">재직 인원</h2>
