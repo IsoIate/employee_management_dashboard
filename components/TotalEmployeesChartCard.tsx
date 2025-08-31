@@ -2,7 +2,6 @@
 
 import { Doughnut } from "react-chartjs-2";
 import { Employee } from "../types/Employees";
-import { setupChartJS } from "@/lib/chart-setup";
 
 type Props = {
   employees: Employee[];
@@ -13,7 +12,6 @@ export default function TotalEmployeesChartCard({
   employees,
   className,
 }: Props) {
-    setupChartJS();
   const totalEmployees = employees.length;
 
   const data = {

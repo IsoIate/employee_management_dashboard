@@ -1,7 +1,6 @@
 'use client'
 
 import { Employee } from "../types/Employees";
-import { setupChartJS } from "@/lib/chart-setup";
 import { Bar } from "react-chartjs-2";
 
 interface Props {
@@ -10,7 +9,7 @@ interface Props {
 }
 
 export default function AgeChartCard({ employees, className }: Props) {
-  setupChartJS();
+  
 
   const ageGroups = {
     "20대": 0,

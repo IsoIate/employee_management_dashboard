@@ -2,7 +2,6 @@
 
 import { format, eachMonthOfInterval } from "date-fns";
 import { Employee } from "../types/Employees";
-import { setupChartJS } from "@/lib/chart-setup";
 import { Chart } from "react-chartjs-2";
 import { ChartOptions } from "chart.js";
 
@@ -16,7 +15,6 @@ export default function PersonnelChartCard({
   employees,
   leaveEmployees,
 }: Props) {
-    setupChartJS();
   const today = new Date();
   const year = today.getFullYear();
   const month = String(today.getMonth() + 1).padStart(2, "0");

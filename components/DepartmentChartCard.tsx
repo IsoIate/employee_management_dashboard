@@ -1,7 +1,6 @@
 'use client'
 
 import { Employee } from "../types/Employees";
-import { setupChartJS } from "@/lib/chart-setup";
 import { Bar } from "react-chartjs-2";
 
 interface Props {
@@ -10,9 +9,6 @@ interface Props {
 }
 
 export default function DepartmentChartCard({ employees, className }: Props) {
-    setupChartJS();
-
-    
   const department = [...new Set(employees.map((e) => e.department))];
   const employeeDepData: Record<string, Employee[]> = {}; // record를 사용하면 [key:string]: Employee[] 형태를 좀더 간결하게 사용할 수 있음
   const employeeDepCount: Record<string, number> = {};
