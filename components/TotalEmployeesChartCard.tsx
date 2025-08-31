@@ -1,5 +1,26 @@
 'use client'
 
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  PointElement,
+  LineElement,
+  ArcElement,
+  Legend,
+  Tooltip,
+} from "chart.js";
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  PointElement,
+  LineElement,
+  ArcElement,
+  Legend,
+  Tooltip
+);
 import { Doughnut } from "react-chartjs-2";
 import { Employee } from "../types/Employees";
 
