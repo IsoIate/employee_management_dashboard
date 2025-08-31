@@ -40,19 +40,19 @@ export default function Dashboard() {
         <h1 className="text-2xl font-bold mb-4">대시보드</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="grid grid-cols-1 gap-4">
-            <TotalEmployeesChartCard employees={employees} />
-            <AgeChartCard employees={employees} className="w-full " />
+            {/* <TotalEmployeesChartCard employees={employees} /> */}
+            {/* <AgeChartCard employees={employees} className="w-full " /> */}
           </div>
           <div className="grid grid-cols-1 gap-4 w-full h-full">
-            <GenderChartCard employees={employees} />
-            <DepartmentChartCard employees={employees} className="w-full " />
+            {/* <GenderChartCard employees={employees} /> */}
+            {/* <DepartmentChartCard employees={employees} className="w-full " /> */}
           </div>
           <div className="col-span-1 md:col-span-2">
-            {/* <PersonnelChartCard
+            <PersonnelChartCard
               employees={employees}
               leaveEmployees={leaveEmployees}
               className="w-full "
-            /> */}
+            />
           </div>
         </div>
       </div>
