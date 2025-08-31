@@ -44,7 +44,10 @@ export default function Login({ setPage }: Props) {
       password,
     });
 
-    if (!result) console.log("로그인 실패");
+    if (!result) {
+      console.log("로그인 실패");
+      return;
+    }
     else if (result.status === 200) {
       navigate.push("/");
     } else {
