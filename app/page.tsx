@@ -1,12 +1,15 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { Employee } from "../types/Employees";
-import GenderChartCard from "@/components/GenderChartCard";
-import AgeChartCard from "@/components/AgeChartCard";
-import DepartmentChartCard from "@/components/DepartmentChartCard";
-import TotalEmployeesChartCard from "@/components/TotalEmployeesChartCard";
-import PersonnelChartCard from "@/components/PersonnelChartCard";
+
+const GenderChartCard = dynamic(() => import("@/components/GenderChartCard"), {ssr:false});
+const AgeChartCard = dynamic(() => import("@/components/AgeChartCard"), {ssr:false});
+const DepartmentChartCard = dynamic(() => import("@/components/DepartmentChartCard"), {ssr:false});
+const TotalEmployeesChartCard = dynamic(() => import("@/components/TotalEmployeesChartCard"), {ssr:false});
+const PersonnelChartCard = dynamic(() => import("@/components/PersonnelChartCard"), {ssr:false});
+
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import Loading from "@/components/Loading";
