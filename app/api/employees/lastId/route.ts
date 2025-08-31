@@ -1,7 +1,6 @@
-import { WithId } from "mongodb";
 import clientPromise from "../../../../lib/mongodb";
 import { Employee } from "../../../../types/Employees";
-import { NextRequest, NextResponse } from "next/server";
+import {  NextResponse } from "next/server";
 
 export async function GET() {
   try {
@@ -14,7 +13,6 @@ export async function GET() {
 
     return NextResponse.json({ id: lastId?.id });
   } catch (e) {
-    console.error(e);
     return NextResponse.json({ error: "Failed to fetch data" });
   }
 }

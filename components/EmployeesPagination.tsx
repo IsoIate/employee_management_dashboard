@@ -1,34 +1,38 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { Container, Pagination, Form } from "react-bootstrap";
+import { Employee } from "./../types/Employees";
+import { useEffect, useState } from "react";
 
 type Props = {
-  pathname: string;
-  currentPage: number;
-  totalPages: number;
+  searchResult: Employee[];
+  setPaginatedResult: React.Dispatch<React.SetStateAction<Employee[]>>;
 };
 
 export default function EmployeesPagination({
-  pathname,
-  currentPage,
-  totalPages,
+  searchResult,
+  setPaginatedResult,
 }: Props) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const pageNumbers = [];
-  const visiblePages = 10; // 한 번에 보여줄 페이지 수
+  const [currentPage, setCurrentPagePage] = useState(1); // 현재 페이지
+  const visiblePages = 10; // 페이지네이션 목록 수
+  const itemsPerPage = 12; // 한 페이지에 보여줄 사원 수
+  const totalPages = Math.ceil(searchResult.length / itemsPerPage); // 총 페이지
+
   const startPage = Math.max(1, currentPage - Math.floor(visiblePages / 2));
   const endPage = Math.min(totalPages, startPage + visiblePages - 1);
 
+  const pageNumbers = []; // 페이지네이션 목록 숫자
+
+  useEffect(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = currentPage * itemsPerPage;
+    const currentData = searchResult.slice(start, end);
+
+    setPaginatedResult(currentData);
+  }, [currentPage, searchResult]);
+
+
   for (let i = startPage; i <= endPage; i++) {
     pageNumbers.push(i);
-  }
-
-  function goToPage(page: number) {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("page", String(page));
-    router.push(`${pathname}?${params.toString()}`);
   }
 
   return (
@@ -36,7 +40,7 @@ export default function EmployeesPagination({
       <div className="flex justify-center mt-6">
         <nav className="inline-flex items-center space-x-2">
           <button
-            onClick={() => goToPage(currentPage - 1)}
+            onClick={() => setCurrentPagePage(currentPage - 1)}
             disabled={currentPage === 1}
             className={`px-3 py-1 rounded-lg border text-sm font-medium 
         ${
@@ -51,7 +55,7 @@ export default function EmployeesPagination({
           {pageNumbers.map((page) => (
             <button
               key={page}
-              onClick={() => goToPage(page)}
+              onClick={() => setCurrentPagePage(page)}
               className={`px-3 py-1 rounded-lg border text-sm font-medium
           ${
             page === currentPage
@@ -64,7 +68,7 @@ export default function EmployeesPagination({
           ))}
 
           <button
-            onClick={() => goToPage(currentPage + 1)}
+            onClick={() => setCurrentPagePage(currentPage + 1)}
             disabled={currentPage === totalPages}
             className={`px-3 py-1 rounded-lg border text-sm font-medium
         ${

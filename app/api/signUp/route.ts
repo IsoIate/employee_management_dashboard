@@ -27,6 +27,7 @@ export async function POST(request: NextRequest) {
       username,
       phone,
       createdAt: new Date(),
+      role: "user"
     });
 
     if (result.acknowledged) {

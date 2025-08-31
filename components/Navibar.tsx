@@ -19,8 +19,6 @@ interface User {
 export default function Navibar({ session }: Session) {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  console.log(session)
-
   return (
     <>
       <nav className="bg-blue-400 shadow py-4">

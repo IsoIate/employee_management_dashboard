@@ -1,6 +1,5 @@
 import clientPromise from "@/lib/mongodb";
 import { Employee } from "@/types/Employees";
-import { WithId } from "mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -17,7 +16,8 @@ export async function POST(req: NextRequest) {
       .insertOne(reqData.data);
 
     if (data.acknowledged) return NextResponse.json({ res: true });
-    else return NextResponse.json({ res: false });
+    else 
+      return NextResponse.json({ res: false });
   } catch (e) {
     console.error(e);
     return NextResponse.json({ error: "Failed to fetch data" });

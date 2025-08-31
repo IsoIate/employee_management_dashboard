@@ -1,42 +1,42 @@
-import { WithId } from "mongodb";
 import clientPromise from "../../../lib/mongodb";
-import { Employee } from "../../../types/Employees";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
     const client = await clientPromise;
     const db = client.db("Employee_Management");
+    const userData = await db.collection("User").find({}).toArray();
 
-    const employees = await db
-      .collection<Employee>("Employees")
-      .find({})
-      .toArray();
+    // id, pw 제거 후 반환
+    const filteredData = userData.map(({ _id, password, ...rest }) => rest);
 
     return NextResponse.json({
-      employees,
+      filteredData,
     });
   } catch (e) {
     return NextResponse.json({ error: "Failed to fetch data" });
   }
 }
 
-export async function POST(req: NextRequest) {
+export async function PUT(req: NextRequest) {
   try {
     const client = await clientPromise;
     const db = client.db("Employee_Management");
     const reqData = await req.json();
-    const data: WithId<Employee> | null = await db
-      .collection<Employee>("Employees")
-      .findOne({ id: Number(reqData.id) });
+    const data = reqData.data;
 
-    if (!data) return NextResponse.json({ error: "사원 데이터 조회 실패" });
+    const result = await db.collection("User").updateOne(
+      { email: data.email },
+      {
+        $set: {
+          role: data.role,
+        },
+      }
+    );
 
-    const { _id, ...restData } = data;
-
-    return NextResponse.json(restData);
+    if (result.acknowledged) return NextResponse.json(true);
+    else return NextResponse.json(false);
   } catch (e) {
-    console.error(e);
     return NextResponse.json({ error: "Failed to fetch data" });
   }
 }

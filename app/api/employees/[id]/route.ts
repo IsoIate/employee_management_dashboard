@@ -1,6 +1,5 @@
 import clientPromise from "@/lib/mongodb";
 import { Employee } from "@/types/Employees";
-import { WithId } from "mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(
@@ -12,15 +11,6 @@ export async function PUT(
     const db = client.db("Employee_Management");
     const reqData = await req.json();
     const id = params.id;
-
-    // const data = await db.collection<Employee>("Employees").updateMany(
-    //   {
-    //     status: "status_3",
-    //   },
-    //   {
-    //     $set: { status: "status_1" },
-    //   }
-    // );
 
     const data = await db.collection<Employee>("Employees").updateOne(
       { id: Number(id) },

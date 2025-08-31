@@ -1,153 +1,185 @@
+"use client";
+
+import axios from "axios";
+import { useEffect, useState } from "react";
+
+interface User {
+  email: string;
+  username: string;
+  phone: string;
+  role: string;
+  createdAt: Date;
+}
+
 export default function adminPage() {
+  const [userData, setUserData] = useState<User[]>([]);
+  const [suggestions, setSuggestions] = useState<User[]>([]);
+  const [suggestionsVisible, setSuggestionsVisible] = useState<
+    "hidden" | "block"
+  >("block");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
+  const [modifiedRole, setModifiedRole] = useState("");
+  const roleLabels: Record<string, string> = {
+    admin: "관리자",
+    hr_admin: "인사팀장",
+    user: "일반직원",
+  };
+
+  useEffect(() => {
+    axios
+      .get("/api/adminPage")
+      .then((res) => {
+        setUserData(res.data.filteredData);
+      })
+      .catch((e) => console.log(e));
+  }, []);
+
+  function userSearch(value: string) {
+    setUsername(value);
+    setSuggestionsVisible("block");
+
+    if (value.trim() === "") {
+      setSuggestions([]);
+      return;
+    }
+
+    // 실시간 검색
+    const filtered = userData.filter(
+      (user) =>
+        user.username.toLowerCase().includes(value.toLowerCase()) ||
+        user.email.toLowerCase().includes(value.toLowerCase())
+    );
+
+    setSuggestions(filtered);
+  }
+
+  function insertUserData(user: User) {
+    setSuggestionsVisible("hidden");
+    setUsername(user.username);
+    setEmail(user.email);
+    setRole(user.role);
+  }
+
+  function changeRole(e: React.ChangeEvent<HTMLSelectElement>) {
+    setModifiedRole(e.target.value);
+  }
+
+  function updateRole() {
+    if (!modifiedRole) {
+      alert("수정할 권한을 선택해주세요");
+      return;
+    }
+
+    axios
+      .put("/api/adminPage", {
+        data: {
+          username: username,
+          email: email,
+          role: modifiedRole,
+        },
+      })
+      .then((res) => {
+        if (res.data) {
+          alert("권한 변경이 완료되었습니다.");
+          location.reload();
+        } else {
+          alert("권한 변경 중 문제가 발생했습니다.");
+        }
+      })
+      .catch((e) => console.log(e));
+  }
+
   return (
     <>
       <div className="min-h-screen p-4 sm:p-8 bg-gray-100 ">
         <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-xl ">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center ">
-            정보
-          </h1>
-
-          <form className="space-y-6">
-            {/* 프로필 이미지 */}
-
-            <div className="flex flex-col items-center space-y-4 mb-20">
-              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-gray-300 "></div>
-              <label className="bg-blue-400 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-blue-500">
-                이미지 변경
-                <input type="file" className="hidden" />
-              </label>
-            </div>
-
-            <h5 className="mb-2 text-gray-700"> 개인정보 </h5>
+          <div className="h-[150px]">
+            <h1 className="text-3xl font-bold text-gray-900 mb-10 text-center ">
+              관리자 페이지
+            </h1>
+          </div>
+          <form className="space-y-6 ">
+            <h5 className="mb-2 text-gray-700"> 권한수정 </h5>
             <hr className="mb-5 border-gray-400" />
 
             {/* 이름, 사원번호 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
+              <div className="relative">
                 <label className="block text-sm font-medium mb-2 text-gray-700">
                   이름
                 </label>
-                <input type="text" name="name" className="form-control" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2 text-gray-700">
-                  사원번호
-                </label>
                 <input
                   type="text"
-                  name="id"
-                  className="form-control bg-gray-300 pointer-events-none"
-                  readOnly
+                  name="username"
+                  className="form-control w-full"
+                  value={username}
+                  onChange={(e) => {
+                    userSearch(e.target.value);
+                  }}
                 />
-              </div>
-            </div>
-
-            {/* 나이, 성별, 이메일 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-gray-700">
-                    나이
-                  </label>
-                  <input type="number" name="age" className="form-control" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-gray-700">
-                    성별
-                  </label>
-                  <div className="flex flex-row gap-3">
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        id="male"
-                        name="gender"
-                        value="Male"
-                      />
-                      <label htmlFor="male" className="form-check-label">
-                        남성
-                      </label>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        id="female"
-                        name="gender"
-                        value="Female"
-                      />
-                      <label htmlFor="female" className="form-check-label">
-                        여성
-                      </label>
-                    </div>
-                  </div>
-                </div>
+                {suggestions.length > 0 && (
+                  <ul
+                    className={`absolute left-0 right-0 bg-white border border-gray-200 rounded-lg mt-1 shadow-lg w-full max-h-40 overflow-y-auto z-10 ${suggestionsVisible}`}
+                  >
+                    {suggestions.map((employee) => (
+                      <li
+                        key={employee.email}
+                        className=" py-2 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => insertUserData(employee)}
+                      >
+                        <span className="font-medium">{employee.username}</span>
+                        <span className="text-sm text-gray-500 ml-2">
+                          {employee.email}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium mb-2 text-gray-700">
                   이메일
                 </label>
-                <input type="email" name="email" className="form-control" />
-                <div className={`alert alert-warning mt-2 `} role="alert">
-                  <p className="m-0"> 이메일 주소를 확인해주세요. </p>
-                </div>
-              </div>
-            </div>
-
-            <h5 className="mb-2 text-gray-700"> 직원정보 </h5>
-            <hr className="mb-5 border-gray-400" />
-
-            {/* 부서, 직책 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium mb-2 text-gray-700">
-                  부서
-                </label>
-                <input type="text" name="department" className="form-control" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2 text-gray-700">
-                  직급
-                </label>
                 <input
                   type="text"
-                  name="position"
-                  className="form-control w-full"
-                />
-              </div>
-            </div>
-
-            {/* 입사, 퇴사일 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium mb-2 text-gray-700">
-                  입사일
-                </label>
-                <input type="date" name="startDate" className="form-control" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2 text-gray-700">
-                  퇴사일
-                </label>
-                <input
-                  type="date"
-                  name="leaveDate"
-                  className="form-control bg-gray-300 pointer-events-none"
+                  name="email"
+                  value={email}
+                  className="form-control bg-white cursor-not-allowed"
                   readOnly
                 />
               </div>
             </div>
 
-            {/* 메모 */}
-            <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+            {/* 현재 권한, 수정할 권한 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium mb-2 text-gray-700">
-                  메모
+                  현재 권한
                 </label>
-                <textarea
-                  className="form-control resize-none w-full h-40"
-                  name="memo"
-                ></textarea>
+                <input
+                  type="text"
+                  name="role"
+                  value={roleLabels[role] ?? ""}
+                  className="form-control bg-white cursor-not-allowed"
+                  readOnly
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2 text-gray-700">
+                  수정할 권한
+                </label>
+                <select
+                  className="form-select"
+                  name="modifiedRole"
+                  onChange={changeRole}
+                >
+                  <option value="">-- 권한선택 --</option>
+                  <option value="admin">관리자</option>
+                  <option value="hr_admin">인사팀장</option>
+                  <option value="user">일반직원</option>
+                </select>
               </div>
             </div>
 
@@ -156,12 +188,16 @@ export default function adminPage() {
               <button
                 type="button"
                 className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-400"
+                onClick={() => { location.href="/"}}
               >
                 취소
               </button>
               <button
-                type="submit"
+                type="button"
                 className="px-6 py-2 bg-blue-400 text-white rounded-md border-none hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                onClick={() => {
+                  updateRole();
+                }}
               >
                 완료
               </button>

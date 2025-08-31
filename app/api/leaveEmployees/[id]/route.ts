@@ -1,6 +1,5 @@
 import clientPromise from "@/lib/mongodb";
 import { Employee } from "@/types/Employees";
-import { WithId } from "mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(

@@ -8,22 +8,6 @@ import EmployeeStatusModal from "./EmployeeStatusModal";
 import { useModalStore } from "@/store/modalStore";
 import { useSession } from "next-auth/react";
 
-const defaultEmployee: Employee = {
-  id: 0,
-  name: "",
-  email: "",
-  department: "",
-  position: "",
-  gender: "",
-  age: 0,
-  memo: "",
-  status: "",
-  form: "",
-  startDate: "",
-  leaveDate: "",
-  profileImage: "",
-};
-
 interface Props {
   employees?: Employee;
   newId?: number;
@@ -37,8 +21,8 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
   const [newEmpId, setNewId] = useState<number | undefined>(undefined);
   const [gender, setGender] = useState("");
   const [emailValidate, setEmailValidate] = useState("invisible");
-  const [employeeStatus, setEmployeeStatus] = useState("status_1");
-  const [formStatus, setFormStatus] = useState("form_1");
+  const [employeeStatus, setEmployeeStatus] = useState("");
+  const [formStatus, setFormStatus] = useState("");
   const { openModal } = useModalStore();
   const [employeeData, setEmployeeData] = useState<Employee>({
     id: 0,
@@ -55,8 +39,6 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
     leaveDate: "",
     profileImage: "",
   });
-
-  // console.log(employees);
 
   useEffect(() => {
     if (employees) {
@@ -81,7 +63,6 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
     >
   ) => {
     const { name, value } = e.target;
-    console.log(name, value);
 
     // 이메일 검증
     if (e.target.name === "email") {
@@ -106,9 +87,26 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
 
   const employeeDataSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("수정된 사원 정보:", employeeData);
+
+    // 신규사원 프로필이미지
+    if (newId) {
+      employeeData.profileImage =
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=" + newId;
+    }
+
+    const excludeKey = ["leaveDate", "profileImage"];
+    const emptyCheck = Object.entries(employeeData).some(
+      ([key, value]) =>
+        !excludeKey.includes(key) &&
+        (value === null || value === undefined || value === "")
+    );
+    if (emptyCheck) {
+      alert("작성하지 않은 항목이 있습니다.");
+      return;
+    }
 
     if (employees) {
+      // 사원정보 수정
       axios
         .put(`/api/${pathname}`, {
           data: employeeData,
@@ -127,6 +125,7 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
           console.log(e);
         });
     } else if (newId !== undefined && newId !== 0) {
+      // 신규사원 등록
       axios
         .post(`/api/${pathname}`, {
           newId: newId,
@@ -178,10 +177,10 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <label className="bg-blue-400 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-blue-500">
+              {/* <label className="bg-blue-400 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-blue-500">
                 이미지 변경
                 <input type="file" className="hidden" />
-              </label>
+              </label> */}
             </div>
 
             <h5 className="mb-2 text-gray-700"> 개인정보 </h5>
@@ -342,6 +341,7 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
                     onChange={dataChange}
                     disabled={isRole}
                   >
+                    <option value="">-- 선택 --</option>
                     <option value="status_1">재직</option>
                     <option value="status_2">휴직</option>
                   </select>
@@ -358,6 +358,7 @@ export default function EmployeeDetailCard({ employees, newId }: Props) {
                   onChange={dataChange}
                   disabled={isRole}
                 >
+                  <option value="">-- 선택 --</option>
                   <option value="form_1">정규직</option>
                   <option value="form_2">계약직</option>
                   <option value="form_3">인턴/알바</option>
