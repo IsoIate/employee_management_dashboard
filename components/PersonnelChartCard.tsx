@@ -1,3 +1,5 @@
+'use client'
+
 import { parseISO, format, eachMonthOfInterval, addMonths } from "date-fns";
 import { Employee } from "../types/Employees";
 import {

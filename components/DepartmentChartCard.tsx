@@ -1,3 +1,5 @@
+'use client'
+
 import { Employee } from "../types/Employees";
 import { Bar } from "react-chartjs-2";
 import {

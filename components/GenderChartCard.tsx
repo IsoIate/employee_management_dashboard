@@ -1,3 +1,6 @@
+'use client'
+
+
 import { Employee } from "../types/Employees";
 import { Pie } from "react-chartjs-2";
 interface Props {
