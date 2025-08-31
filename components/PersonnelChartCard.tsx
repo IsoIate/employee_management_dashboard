@@ -24,7 +24,7 @@ ChartJS.register(
 import { format, eachMonthOfInterval } from "date-fns";
 import { Employee } from "../types/Employees";
 import { Chart } from "react-chartjs-2";
-import { ChartOptions } from "chart.js";
+import { ChartData, ChartOptions } from "chart.js";
 
 type Props = {
   employees: Employee[];
@@ -70,7 +70,7 @@ export default function PersonnelChartCard({
     return activeCount;
   });
 
-  const data = {
+  const data: ChartData<"bar" | "line"> = {
     labels: months,
     datasets: [
       {
