@@ -44,8 +44,8 @@ export default function Dashboard() {
             <AgeChartCard employees={employees} className="w-full " />
           </div>
           <div className="grid grid-cols-1 gap-4 w-full h-full">
-            {/* <GenderChartCard employees={employees} /> */}
-            {/* <DepartmentChartCard employees={employees} className="w-full " /> */}
+            <GenderChartCard employees={employees} />
+            <DepartmentChartCard employees={employees} className="w-full " />
           </div>
           <div className="col-span-1 md:col-span-2">
             {/* <PersonnelChartCard
