@@ -13,27 +13,6 @@ const PersonnelChartCard = dynamic(() => import("@/components/PersonnelChartCard
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import Loading from "@/components/Loading";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  PointElement,
-  LineElement,
-  ArcElement,
-  Legend,
-  Tooltip,
-} from "chart.js";
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  PointElement,
-  LineElement,
-  ArcElement,
-  Legend,
-  Tooltip
-);
 
 export default function Dashboard() {
   const [employees, setEmployees] = useState<Employee[]>([]);

@@ -1,6 +1,7 @@
 'use client'
 
 import { Employee } from "../types/Employees";
+import { setupChartJS } from "@/lib/chart-setup";
 import { Pie } from "react-chartjs-2";
 interface Props {
   employees: Employee[];
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export default function GenderChartCard({ employees, className }: Props) {
+    setupChartJS();
   const male = employees.filter((e) => e.gender === "Male").length;
   const female = employees.filter((e) => e.gender === "Female").length;
 
